@@ -99,6 +99,40 @@ class CalculatorTest {
 
         assertEquals(expected, actual);
     }
+    @Test //test 5 equals 5
+    @DisplayName("should show the pressed number without any operator pressed")
+    void testEqualNumber() {
+        Calculator calc = new Calculator();
 
+        calc.pressDigitKey(5);
+        calc.pressEqualsKey();
+
+        String expected = "5";
+        String actual = calc.readScreen();
+
+        assertEquals(expected, actual);
+    }
+    @Test
+    @DisplayName("should accept only 9 digits")
+    void testMaxDigits (){
+        Calculator calc = new Calculator();
+
+        calc.pressDigitKey(1);
+        calc.pressDigitKey(1);
+        calc.pressDigitKey(1);
+        calc.pressDigitKey(1);
+        calc.pressDigitKey(1);
+        calc.pressDigitKey(1);
+        calc.pressDigitKey(1);
+        calc.pressDigitKey(1);
+        calc.pressDigitKey(1);
+        calc.pressDigitKey(1);
+        calc.pressEqualsKey();
+
+        String expected = "111111111";
+        String actual = calc.readScreen();
+        assertEquals(expected, actual);
+
+    }
 }
 

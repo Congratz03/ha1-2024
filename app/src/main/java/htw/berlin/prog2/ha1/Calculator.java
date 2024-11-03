@@ -27,13 +27,16 @@ public class Calculator {
      * Führt in jedem Fall dazu, dass die gerade gedrückte Ziffer auf dem Bildschirm angezeigt
      * oder rechts an die zuvor gedrückte Ziffer angehängt angezeigt wird.
      * @param digit Die Ziffer, deren Taste gedrückt wurde
+     *  Wenn mehr als 9 Zahlen gedrückt werden, werden trotzdem nur 9 Zahlen angezeigt
      */
     public void pressDigitKey(int digit) {
         if(digit > 9 || digit < 0) throw new IllegalArgumentException();
 
         if(screen.equals("0") || latestValue == Double.parseDouble(screen)) screen = "";
 
-        screen = screen + digit;
+        if (screen.length() < 9) {
+            screen += digit;
+        }
     }
 
     /**
@@ -116,6 +119,7 @@ public class Calculator {
      * Wird die Taste weitere Male gedrückt (ohne andere Tasten dazwischen), so wird die letzte
      * Operation (ggf. inklusive letztem Operand) erneut auf den aktuellen Bildschirminhalt angewandt
      * und das Ergebnis direkt angezeigt.
+     * Wenn kein Operator gedrückt wurde wird die zuvor gedrückte Zahl ausgegeben.
      */
     public void pressEqualsKey() {
         var result = switch(latestOperation) {
@@ -123,7 +127,7 @@ public class Calculator {
             case "-" -> latestValue - Double.parseDouble(screen);
             case "x" -> latestValue * Double.parseDouble(screen);
             case "/" -> latestValue / Double.parseDouble(screen);
-            default -> throw new IllegalArgumentException();
+            default -> Double.parseDouble(screen);
         };
         screen = Double.toString(result);
         if(screen.equals("Infinity")) screen = "Error";
